@@ -36,7 +36,7 @@ struct lista *inserir(struct lista *a, int qt, int *m)
 int buscar_elemen(struct lista *b, int e)
 {	int pos=0;
 	
-	while(b->prox!=NULL)
+	while(b!=NULL)
 	{	pos++;
 		if(b->info==e)
 			return pos;
@@ -47,7 +47,7 @@ int buscar_elemen(struct lista *b, int e)
 
 void imprimir(struct lista *b)
 {	printf("\nimprimindo a lista:\n");
-	while(b->prox!=NULL)
+	while(b!=NULL)
 	{	printf("%d\t", b->info);
 		b=b->prox;
 	}
@@ -56,18 +56,27 @@ void imprimir(struct lista *b)
 
 struct lista *remover_elemen(struct lista *z, int *m)
 {	struct lista *a=z, *b;
-	int k;
-	*m-=1;
+	int k, q=0;
+	
 	printf("\nqual elemento remover: ");
 	scanf("%d", &k);
         if(z->info==k)
-                return NULL;
+        {	*m-=1;
+		return NULL;
+	}
+	
 	while(a->info!=k)
 	{	b=a;
 		a=a->prox;
+		q++;
+		if(q==*m)
+		{	printf("não encontrado\n");
+			return z;
+		}
 	}
 	b->prox=a->prox;
 	free(a);
+	printf("removido com sucesso\n");
 	return z;
 }
 
