@@ -72,7 +72,7 @@ struct lista *remover_elemen(struct lista *z, int *m)
 }
 
 int main()
-{	struct lista *a=NULL;
+{	struct lista *a;
 	int op=0, qt, e, m=0;
 	
 	printf("quantidade de nós da lista: ");
@@ -94,7 +94,7 @@ int main()
 			break;
 			
                         case 2:
-                                if(a==NULL)
+                                if(m==0)
                                        printf("\nlista vazia\n");
                                 else
                                 {       printf("\nqual elemento procurar: ");
@@ -108,14 +108,14 @@ int main()
                         break;
 			
                         case 3:
-                                if(a==NULL)
+                                if(m==0)
                                         printf("\nlista vazia\n");
                                 else
                                         a=remover_elemen(a, &m);
                         break;
 			
                         case 4:
-                                if(a==NULL)
+                                if(m==0)
 					printf("\nlista vazia\n");
 				else
 					imprimir(a);
