@@ -1,0 +1,129 @@
+/* 3) Escreva um programa, que contém uma estrutura do tipo Lista Simplesmente Encadeada que
+armazena números inteiros. Leia a quantidade de nós da lista e execute um menu de opções
+através de chamadas às funções para:
+	1) Inserir um elemento na lista
+	2) Buscar um elemento (lido via teclado) na lista
+	3) Remover um elemento k (lido via teclado) da lista
+	4) Imprimir a lista
+	5) Sair		*/
+
+#include<stdio.h>
+#include<stdlib.h>
+struct lista{
+	int info;
+	struct lista *prox;     };
+
+struct lista *inserir(struct lista *a, int qt, int *m)
+{	struct lista *b=a, *c;
+
+	if(*m==qt)
+	{	printf("\nlista cheia\n");
+		return a;
+	}
+	
+	while(b->prox!=NULL)
+		b=b->prox;
+	c=(struct lista*)malloc(sizeof(struct lista));
+	
+	printf("\nqual inteiro deseja inserir: ");
+	scanf("%d", &c->info);
+	c->prox=NULL;
+	b->prox=c;
+	*m+=1;
+	return a;
+}
+
+int buscar_elemen(struct lista *b, int e)
+{	int pos=0;
+	
+	while(b->prox!=NULL)
+	{	pos++;
+		if(b->info==e)
+			return pos;
+		b=b->prox;
+	}
+	return -1;
+}
+
+void imprimir(struct lista *b)
+{	printf("\nimprimindo a lista:\n");
+	while(b->prox!=NULL)
+	{	printf("%d\t", b->info);
+		b=b->prox;
+	}
+	printf("\n");
+}
+
+struct lista *remover_elemen(struct lista *z, int *m)
+{	struct lista *a=z, *b;
+	int k;
+	*m-=1;
+	printf("\nqual elemento remover: ");
+	scanf("%d", &k);
+        if(z->info==k)
+                return NULL;
+	while(a->info!=k)
+	{	b=a;
+		a=a->prox;
+	}
+	b->prox=a->prox;
+	free(a);
+	return z;
+}
+
+int main()
+{	struct lista *a;
+	int op=0, qt, e, m=0;
+	
+	printf("quantidade de nós da lista: ");
+	scanf("%d", &qt);
+	while(op!=5)
+	{	printf("\n\tmenu\n1) Inserir um elemento na lista\n2) Buscar um elemento (lido via teclado) na lista\n3) Remover um elemento k (lido via teclado) da lista\n4) Imprimir a lista\n5) Sair\nEscolha: ");
+		scanf("%d", &op);
+		switch(op)
+		{	case 1:
+				if(m==0)
+                                {       a=(struct lista*)malloc(sizeof(struct lista));
+                                        printf("\nqual inteiro deseja inserir: ");
+                                        scanf("%d", &a->info);
+                                        a->prox=NULL;
+                                        m++;
+                                }
+                                else
+                                       a=inserir(a, qt, &m);
+			break;
+			
+                        case 2:
+                                if(a==NULL)
+                                       printf("\nlista vazia\n");
+                                else
+                                {       printf("\nqual elemento procurar: ");
+                                        scanf("%d", &e);
+                                        if((buscar_elemen(a, e))<0)
+                                                printf("\nnão encontrado\n");
+                                        else
+                                        {        printf("\nencontrado na posição: %d\n", buscar_elemen(a, e));
+                                        }
+                                }
+                        break;
+			
+                        case 3:
+                                if(a==NULL)
+                                        printf("\nlista vazia\n");
+                                else
+                                        a=remover_elemen(a, &m);
+                        break;
+			
+                        case 4:
+                                imprimir(a);
+                        break;
+			
+                        case 5:
+                                printf("\nsaindo...\n\n");
+                        break;
+			
+                        default:
+                                printf("\nopção inválida\n");
+                }
+        }
+}
