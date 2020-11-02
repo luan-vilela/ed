@@ -115,7 +115,10 @@ int main()
                         break;
 			
                         case 4:
-                                imprimir(a);
+                                if(a==NULL)
+					printf("\nlista vazia\n");
+				else
+					imprimir(a);
                         break;
 			
                         case 5:
