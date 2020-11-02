@@ -1,0 +1,152 @@
+/* 4) Dada uma estrutura livraria com código, título, autor, ano e editora. Faça um programa,
+usando Listas Simplesmente Encadeadas, com opções para: I- Inserir um livro na lista, B- Buscar
+um livro na lista, R- Remover um livro da lista e E- Escrever todos os livros da lista.
+Na busca, leia um código qualquer e mostre título e autor, caso o código exista na lista. A
+lista deve conter n livros lidos via teclado. */
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct cadastro{
+	int codigo, ano;
+	char titulo[50], autor[50], editora[50];
+	struct cadastro *prox;			};
+
+struct cadastro *inserir(struct cadastro *l, int *m)
+{	struct cadastro *aux=l, *aux2;
+	
+	if(*m!=0)
+	{	while(aux->prox!=NULL)
+		aux=aux->prox;
+	}
+	
+	aux2=(struct cadastro*)malloc(sizeof(struct cadastro));
+	
+	printf("\ncódigo: ");
+	scanf("%d", &aux2->codigo);
+	
+	printf("ano: ");
+	scanf("%d", &aux2->ano);
+	
+	printf("título: ");
+	__fpurge(stdin);
+	scanf("%s", aux2->titulo);
+	
+	printf("autor: ");
+	scanf("%s", aux2->autor);
+	
+	printf("editora: ");
+	scanf("%s", aux2->editora);
+	
+	aux2->prox=NULL;
+	if(*m!=0)
+		aux->prox=aux2;
+	else
+		l=aux2;
+	*m+=1;
+	printf("\ninserido com sucesso\n");
+	return l;
+}
+
+void busca(struct cadastro *l, int *m)
+{	int u=0, b;
+	
+	if(*m==0)
+	{	printf("\nlista vazia\n");
+		return;
+	}
+	
+	printf("\nqual código buscar: ");
+	scanf("%d", &b);
+	while(l->codigo!=b)
+	{	l=l->prox;
+		u++;
+		if(u==*m && l->codigo!=b)
+		{	printf("não encontrado\n");
+			return;
+		}
+	}
+	
+	printf("\ntítulo: %s\nautor: %s\n", l->titulo, l->autor);
+	return;
+}
+
+struct cadastro *remover(struct cadastro *livro, int *m)
+{	struct cadastro *a=livro, *b=livro;
+	char rem[50];
+	int u=0;
+	
+	if(*m==0)
+	{	printf("\nlista vazia\n");
+		return NULL;
+	}
+	
+	printf("\nqual título deseja remover: ");
+	__fpurge(stdin);
+	scanf("%s", rem);
+	while(strcmp(a->titulo, rem)!=0)
+	{	b=a;
+		a=a->prox;
+		u++;
+		if(*m==u && strcmp(a->titulo, rem)!=0)
+		{	printf("\nnão encontrado\n");
+			return livro;
+		}
+	}
+	
+	b->prox=a->prox;
+	free(a);
+	m-=1;
+	printf("\nremovido com sucesso\n");
+	return livro;
+}
+
+void imprimir(struct cadastro *l, int *m)
+{	if(*m==0)
+	{	printf("\nlista vazia\n");
+		return;
+	}
+	
+	printf("\n");
+	while(l!=NULL)
+	{	printf("\ntítulo: %s\nautor: %s\neditora: %s\nano: %d\ncódigo: %d\n", l->titulo, l->autor, l->editora, l->ano, l->codigo);
+		l=l->prox;
+	}
+}
+
+int main()
+{	struct cadastro *livro;
+	char op=' ';
+	int m=0;
+	
+	while(op!='S')
+	{	printf("\n\t\tmenu\nI- Inserir um livro na lista\nB- Buscar um livro na lista\nR- Remover um livro da lista\nE- Escrever todos os livros da lista\nS- Sair\n(case-sensitive) Opção: ");
+		__fpurge(stdin);
+		scanf("%c", &op);
+		
+		switch(op)
+		{	case 'I':
+				livro=inserir(livro, &m);
+			break;
+			
+			case 'B':
+				busca(livro, &m);
+			break;
+			
+			case 'R':
+				livro=remover(livro, &m);
+			break;
+			
+			case 'E':
+				imprimir(livro, &m);
+			break;
+			
+			case 'S':
+				printf("\nsaindo...\n\n");
+			break;
+			
+			default:
+				printf("\nopção inválida\n");
+		}
+	}
+}
